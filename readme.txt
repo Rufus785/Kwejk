@@ -1,0 +1,11 @@
+- rejestracja i logowanie
+- obsługa uprawnień ( użytkownik + administrator )
+- wyświetlanie kwejków
+- komentowanie kwejków przez użytkownika
+- dodawanie ocen kwejków przez użytkownika
+- raportowanie kwejków do administratora
+- obsługa raportów przez administratora
+- możliwość zarządzania kwejkami przez administratora
+- ranking kwejków
+- dodawanie kwejków przez użytkownika
+- dodawanie znaków wodnych do kwejków
