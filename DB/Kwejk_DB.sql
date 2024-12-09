@@ -1,7 +1,12 @@
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
-SET time_zone = "+00:00";
+CREATE DATABASE IF NOT EXISTS `kwejk` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 
+USE `kwejk`;
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+
+START TRANSACTION;
+
+SET time_zone = "+00:00";
 CREATE TABLE `Comments` (
   `comment_id` int(11) NOT NULL,
   `image_id` int(11) NOT NULL,

@@ -42,6 +42,7 @@ body {
   padding: 2rem;
   background-color: var(--secondary-bg);
   border-radius: 8px;
+  margin-top: 100px;
 }
 .auth-container h1 {
   text-align: center;
@@ -90,4 +91,24 @@ body {
 }
 .auth-switch a:hover {
   text-decoration: underline;
+}
+.php-message {
+  background-color: var(--secondary-bg);
+  color: var(--text-color);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 1rem;
+  width: fit-content;
+  position: absolute;
+  left: 50%;
+  top: 135px;
+  transform: translate(-50%, -50%);
+}
+.php-message.error {
+  border: 1px solid var(--accent-color);
+}
+.php-message.success {
+  border: 1px solid #4CAF50;
 }

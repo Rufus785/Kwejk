@@ -4,13 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Logowanie - KWEJK.pl</title>
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="./css/login.css" />
   </head>
   <body>
     <header class="main-header">
       <div class="header-content">
-        <a href="/" class="logo">
-          <img src="../images/kwejk-logo.png" alt="KWEJK.pl" />
+      <a href="./index.php" class="logo">
+          <img src="./images/kwejk-logo.png" alt="KWEJK.pl" />
         </a>
       </div>
     </header>
@@ -20,8 +20,8 @@
         <h1>Logowanie</h1>
         <form id="login-form" class="auth-form">
           <div class="form-group">
-            <label for="login-email">Email:</label>
-            <input type="email" id="login-email" name="email" required />
+            <label for="login-email">Nazwa użytkownika:</label>
+            <input type="" id="login-email" name="email" required />
           </div>
           <div class="form-group">
             <label for="login-password">Hasło:</label>
@@ -36,11 +36,10 @@
         </form>
         <p class="auth-switch">
           Nie masz konta?
-          <a href="../Register/register.html">Zarejestruj się</a>
+          <a href="./register.php">Zarejestruj się</a>
         </p>
       </div>
     </main>
 
-    <script src="auth.js"></script>
   </body>
 </html>

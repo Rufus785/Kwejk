@@ -4,13 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Rejestracja - KWEJK.pl</title>
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="./css/register.css" />
   </head>
   <body>
     <header class="main-header">
       <div class="header-content">
-        <a href="/" class="logo">
-          <img src="../images/kwejk-logo.png" alt="KWEJK.pl" />
+        <a href="./index.php" class="logo">
+          <img src="./images/kwejk-logo.png" alt="KWEJK.pl" />
         </a>
       </div>
     </header>
@@ -25,16 +25,17 @@
         $username = $_POST['username'];
     
     if ($password !== $confirmPassword) {
-        echo '<p>Hasła nie są takie same!</p>';
+      echo '<p class="php-message error">Hasła nie są takie same!</p>';
     } else {
         if(strlen($password) < 8) {
-            echo '<p>Hasło musi mieć co najmniej 8 znaków.</p>';
+          echo '<p class="php-message error">Hasło musi mieć conajmniej 8 znaków.</p>';
         } elseif (!preg_match('/[A-Z]/', $password)) {
-            echo '<p>Hasło musi zawierać co najmniej jedną dużą literę.</p>';
+          echo '<p class="php-message error">Hasło musi zawierać conajmniej jedną dużą literę.</p>';
         } elseif (!preg_match('/[0-9]/', $password)) {
-            echo '<p>Hasło musi zawierać co najmniej jedną cyfrę.</p>';
+          echo '<p class="php-message error">Hasło musi zawierać conajmniej jedną cyfrę.</p>';
         } elseif (!preg_match('/[\W_]/', $password)) {
-            echo '<p>Hasło musi zawierać co najmniej jeden znak specjalny.</p>';
+          echo '<p class="php-message error">Hasło musi zawierać conajmniej jeden znak specjalny.</p>';
+
         } else {
             $sql = "SELECT username FROM users WHERE username = '{$username}'";
             $result = $mysqli->query($sql);
@@ -43,17 +44,17 @@
                 $pass = codepass($password); 
                 $sql = "INSERT INTO users (username, password_hash) VALUES ('{$username}', '".$pass."')";
                 if ($mysqli->query($sql)) {
-                    echo '<p>Pomyślnie zarejestrowano! Możesz się zalogować.</p>';						
+                  echo '<p class="php-message success">Pomyślnie zarejestrowano! Możesz się zalogować.</p>';					
                 } else {
-                    echo '<p>Błąd dodania</p>';
+                    echo '<p class="php-message error">Błąd dodania</p>';
                     echo $mysqli->error;
                 }
             } else {
-                echo '<p>Istnieje już użytkownik z taką nazwą użytkownika</p>';
+                echo '<p class="php-message error">Istnieje już użytkownik z taką nazwą użytkownika</p>';
             }
         }
     }
-
+  }
     ?>
 
     <main class="content">
@@ -90,7 +91,7 @@
           <button type="submit" class="submit-button" name="rejestruj">Zarejestruj się</button>
         </form>
         <p class="auth-switch">
-          Masz już konto? <a href="../Login/login.html">Zaloguj się</a>
+          Masz już konto? <a href="./login.php">Zaloguj się</a>
         </p>
       </div>
     </main>

@@ -9,30 +9,20 @@
   <body>
     <header class="main-header">
       <div class="header-content">
-        <a href="/" class="logo">
-          <img src="../images/kwejk-logo.png" alt="KWEJK.pl" />
+      <a href="./index.php" class="logo">
+          <img src="./images/kwejk-logo.png" alt="KWEJK.pl" />
         </a>
         <nav class="main-nav">
           <a href="/dodaj" class="add-button">+ Dodaj</a>
           <a href="/ranking">Top</a>
         </nav>
         <div class="auth-buttons">
-          <a href="../Login/login.html">Logowanie</a>
-          <a href="../Register/register.html" class="register-button"
+          <a href="./Login/login.php">Logowanie</a>
+          <a href="./Register/register.php" class="register-button"
             >Rejestracja</a
           >
         </div>
       </div>
-      <nav class="category-nav">
-        <div class="category-content">
-          <a href="/kategorie">Kategorie</a>
-          <a href="/kategorie1">Kategorie1</a>
-          <div class="search-container">
-            <input type="text" placeholder="Szukaj" />
-            <button type="button">🔍</button>
-          </div>
-        </div>
-      </nav>
     </header>
 
     <main class="content">
@@ -40,7 +30,7 @@
         <section class="posts">
           <article class="post">
             <div class="post-header">
-              <img src="../images/avatar.webp" alt="" class="avatar" />
+              <img src="./images/avatar.webp" alt="" class="avatar" />
 
               <span class="author">xxx</span>
             </div>
@@ -52,7 +42,7 @@
             </div>
             <div class="post-content">
               <img
-                src="../images/post1.jpg"
+                src="./images/post1.jpg"
                 alt="Post image"
                 class="post-image"
               />
@@ -73,12 +63,12 @@
             <h3>Top 3 użytkowników:</h3>
             <ol class="user-list">
               <li>
-                <img src="../images/avatar.webp" alt="" />
+                <img src="./images/avatar.webp" alt="" />
                 <span class="username">xxx</span>
                 <span class="points">1156 pkt.</span>
               </li>
               <li>
-                <img src="../images/avatar.webp" alt="" />
+                <img src="./images/avatar.webp" alt="" />
                 <span class="username">xxx</span>
                 <span class="points">986 pkt.</span>
               </li>
@@ -88,6 +78,5 @@
       </div>
     </main>
 
-    <script src="script.js"></script>
   </body>
 </html>
