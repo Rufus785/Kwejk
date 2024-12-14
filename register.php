@@ -41,7 +41,7 @@
             $result = $mysqli->query($sql);
     
             if($result->num_rows == 0){
-                $pass = codepass($password); 
+                $pass = password_hash($password, PASSWORD_DEFAULT); 
                 $sql = "INSERT INTO users (username, password_hash) VALUES ('{$username}', '".$pass."')";
                 if ($mysqli->query($sql)) {
                   echo '<p class="php-message success">Pomyślnie zarejestrowano! Możesz się zalogować.</p>';					

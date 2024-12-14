@@ -6,6 +6,7 @@
     <title>KWEJK.pl</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
+
   <body>
     <header class="main-header">
       <div class="header-content">
@@ -17,8 +18,8 @@
           <a href="/ranking">Top</a>
         </nav>
         <div class="auth-buttons">
-          <a href="./Login/login.php">Logowanie</a>
-          <a href="./Register/register.php" class="register-button"
+          <a href="./login.php">Logowanie</a>
+          <a href="./register.php" class="register-button"
             >Rejestracja</a
           >
         </div>
@@ -42,7 +43,7 @@
             </div>
             <div class="post-content">
               <img
-                src="./images/post1.jpg"
+                src="./images/post2.jpg"
                 alt="Post image"
                 class="post-image"
               />
