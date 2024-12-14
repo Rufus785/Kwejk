@@ -67,6 +67,26 @@ body {
   align-items: center;
 }
 
+.user-profile a {
+  color: var(--text-color);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.user-profile {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.user-button {
+  background-color: #ffd700;
+  color: #000 !important;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  text-decoration: none;
+}
+
 .register-button {
   background-color: #ffd700;
   color: #000 !important;
