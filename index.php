@@ -7,6 +7,44 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
 
+  <?php
+
+      include("config.php");
+  
+      if (isset($_SESSION['logged']) && $_SESSION['logged'] === true) {
+          $user_id = $_SESSION['user_id'];
+          $sql = "SELECT username FROM users WHERE user_id = ? LIMIT 1";
+          $stmt = $mysqli->prepare($sql);
+          $stmt->bind_param('i', $user_id);
+          $stmt->execute();
+          $result = $stmt->get_result();
+          
+          if ($result->num_rows > 0) {
+              $row = $result->fetch_assoc();
+              $username = $row['username'];
+          } else {
+              unset($_SESSION['logged']);
+              unset($_SESSION['user_id']);
+              $username = null;
+          }
+
+          $sql = "SELECT is_admin FROM users WHERE user_id = ? LIMIT 1";
+          $stmt = $mysqli->prepare($sql);
+          $stmt->bind_param('i', $user_id);
+          $stmt->execute();
+          $result = $stmt->get_result();
+          
+          if ($result->num_rows > 0) {
+              $row = $result->fetch_assoc();
+              $isAdmin = $row['is_admin'];
+          } else {
+              unset($_SESSION['logged']);
+              unset($_SESSION['user_id']);
+              $isAdmin = null;
+          }
+      }
+  ?>
+
   <body>
     <header class="main-header">
       <div class="header-content">
@@ -17,11 +55,12 @@
           <a href="/dodaj" class="add-button">+ Dodaj</a>
           <a href="/ranking">Top</a>
         </nav>
-        <div class="auth-buttons">
+        <div class="auth-buttons" style="display: <?php echo htmlspecialchars($username)==null ? 'block' : 'none'; ?>;>
           <a href="./login.php">Logowanie</a>
-          <a href="./register.php" class="register-button"
-            >Rejestracja</a
-          >
+          <a href="./register.php" class="register-button">Rejestracja</a>
+        </div>
+        <div class="user-profile" style="display: <?php echo htmlspecialchars($username)==null ? 'none' : 'block'; ?>;">
+            <a href="./profile.php" class="user-button"><?php echo htmlspecialchars($username); echo $isAdmin==0 ? '(user)' : '(admin)' ; ?></a>
         </div>
       </div>
     </header>
