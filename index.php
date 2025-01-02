@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>KWEJK.pl</title>
     <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="css/acp.css" />
   </head>
 
   <?php
@@ -153,13 +154,30 @@
           <a href="./dodaj.php" class="add-button">+ Dodaj</a>
           <a href="/ranking">Top</a>
         </nav>
-        <div class="auth-buttons" style="display: <?php echo htmlspecialchars($username)==null ? 'block' : 'none'; ?>;>
+        <div class="auth-buttons" style="display: <?php echo htmlspecialchars($username)==null ? 'block' : 'none'; ?>;">
           <a href="./login.php">Logowanie</a>
           <a href="./register.php" class="register-button">Rejestracja</a>
         </div>
-        <div class="user-profile" style="display: <?php echo htmlspecialchars($username)==null ? 'none' : 'block'; ?>;">
-            <a href="./profile.php" class="user-button"><?php echo htmlspecialchars($username); echo $isAdmin==0 ? '(user)' : '(admin)' ; ?></a>
-        </div>
+        <?php
+        if (isset($_SESSION['logged']) && $_SESSION['logged'] === true){
+          echo'
+            <div class="user-profile" style="display: '; echo htmlspecialchars($username)==null ? 'none' : 'block';
+            echo '">
+                <a href="./profile.php" class="user-button">'; echo htmlspecialchars($username); echo $isAdmin==0 ? '(user)' : '(admin)' ;
+                echo '</a>
+            </div>';
+            if($isAdmin == 1){
+              echo '
+              <div class="user-profile">
+                <a href="./acp.php" class="user-button">Admin Panel</a>
+                </div>
+              ';
+            }
+            echo'<div class="user-profile" style="display:'; echo htmlspecialchars($username)==null ? 'none' : 'block'; echo'">
+                <a href="./logout.php" class="user-button">Wyloguj mnie</a>
+            </div>';
+        }
+        ?>
       </div>
     </header>
 
