@@ -141,6 +141,29 @@
           header("Location: " . $_SERVER['PHP_SELF']);
           exit;
       }
+
+      if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['report_action'], $_POST['image_id'], $_POST['report_reason'])) {
+        $report_reason = $_POST['report_reason'];
+        $image_id = $_POST['image_id'];
+        $user_id = $_SESSION['user_id']; // ID użytkownika, który zgłasza
+    
+        // Wstawianie raportu do bazy danych
+        $sql = "INSERT INTO reports (image_id, reported_by, reason) VALUES (?, ?, ?)";
+        $stmt = $mysqli->prepare($sql);
+        $stmt->bind_param('iis', $image_id, $user_id, $report_reason);
+        
+        if ($stmt->execute()) {
+            $_SESSION['report_status'] = 'Raport został wysłany.';
+        } else {
+            $_SESSION['report_status'] = 'Błąd podczas zgłaszania posta.';
+        }
+        $stmt->close();
+    
+        // Przekierowanie z powrotem do tej samej strony
+        header('Location: ' . $_SERVER['PHP_SELF']);
+        exit;
+    }
+    
       
   ?>
 
@@ -185,50 +208,94 @@
       <div class="content-wrapper">
         <section class="posts">
         <?php foreach ($posts as $post): ?>
-            <article class="post">
-                <div class="post-header">
-                    <img src="./images/avatar.webp" alt="Avatar" class="avatar" />
-                    <span class="author"><?php echo htmlspecialchars($post['username']); ?></span>
-                </div>
-                <h2 class="post-title"><?php echo htmlspecialchars($post['caption']); ?></h2>
-                <div class="post-content">
-                    <img src="<?php echo htmlspecialchars($post['image_url']); ?>" alt="Post image" class="post-image" />
-                </div>
-                <div class="post-actions">
-                    <form method="post" action="">
-                        <input type="hidden" name="image_id" value="<?php echo $post['image_id']; ?>">
-                        <?php if ($post['user_liked']): ?>
-                            <button type="submit" name="like_action" value="unlike" class="vote-up liked">Unlike</button>
-                        <?php else: ?>
-                            <button type="submit" name="like_action" value="like" class="vote-up">Like</button>
-                        <?php endif; ?>
-                    </form>
-                    <span class="vote-count"><?php echo $post['like_count'] ?? 0; ?></span>
-                </div>
-                <div class="comments">
-                    <h3>Komentarze:</h3>
-                    <?php if (count($post['comments']) > 0): ?>
-                        <?php foreach ($post['comments'] as $comment): ?>
-                            <div class="comment">
-                                <strong><?php echo htmlspecialchars($comment['username']); ?>:</strong>
-                                <p><?php echo htmlspecialchars($comment['comment_text']); ?></p>
-                                <small><?php echo htmlspecialchars($comment['created_at']); ?></small>
-                            </div>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <p>Brak komentarzy.</p>
-                    <?php endif; ?>
-                </div>
+    <article class="post">
+        <div class="post-header">
+            <img src="./images/avatar.webp" alt="Avatar" class="avatar" />
+            <span class="author"><?php echo htmlspecialchars($post['username']); ?></span>
+        </div>
+        <h2 class="post-title"><?php echo htmlspecialchars($post['caption']); ?></h2>
+        <div class="post-content">
+            <img src="<?php echo htmlspecialchars($post['image_url']); ?>" alt="Post image" class="post-image" />
+        </div>
 
-                <div class="add-comment">
-                    <form method="post" action="">
-                        <textarea name="comment_text" placeholder="Dodaj komentarz..." required></textarea>
-                        <input type="hidden" name="image_id" value="<?php echo $post['image_id']; ?>" />
-                        <button type="submit">Dodaj komentarz</button>
-                    </form>
-                </div>
+        <!-- Opcja zgłoszenia, przeniesiona nad Like -->
+        <?php
+        if (isset($_SESSION['logged']) && $_SESSION['logged'] === true): // Sprawdzenie, czy użytkownik jest zalogowany
+            // Sprawdzamy, czy użytkownik już zgłosił post
+            $has_reported = false;
+            if (isset($_SESSION['user_id'])) {
+                $sql_check_report = "SELECT COUNT(*) AS reported_count FROM reports WHERE image_id = ? AND reported_by = ?";
+                $stmt_check_report = $mysqli->prepare($sql_check_report);
+                $stmt_check_report->bind_param('ii', $post['image_id'], $_SESSION['user_id']);
+                $stmt_check_report->execute();
+                $report_result = $stmt_check_report->get_result()->fetch_assoc();
+                $has_reported = $report_result['reported_count'] > 0;
+                $stmt_check_report->close();
+            }
+            ?>
+
+            <div class="report-post">
+                <?php if ($has_reported): ?>
+                    <p style="color: gray;">Już zgłosiłeś ten post.</p>
+                <?php else: ?>
+                    <button type="button" class="report-button" onclick="toggleReportForm(<?php echo $post['image_id']; ?>)">Zgłoś</button>
+                    <div class="report-form" id="report-form-<?php echo $post['image_id']; ?>" style="display: none;">
+                        <form method="post" action="">
+                            <input type="hidden" name="image_id" value="<?php echo $post['image_id']; ?>">
+                            <textarea name="report_reason" placeholder="Podaj powód raportu..." required></textarea>
+                            <button type="submit" name="report_action" value="report">Wyślij zgłoszenie</button>
+                        </form>
+                    </div>
+                <?php endif; ?>
+            </div>
+
+        <?php endif; ?>
+
+        <div class="post-actions">
+            <form method="post" action="">
+                <input type="hidden" name="image_id" value="<?php echo $post['image_id']; ?>">
+                <?php if ($post['user_liked']): ?>
+                    <button type="submit" name="like_action" value="unlike" class="vote-up liked">Unlike</button>
+                <?php else: ?>
+                    <button type="submit" name="like_action" value="like" class="vote-up">Like</button>
+                <?php endif; ?>
+            </form>
+            <span class="vote-count"><?php echo $post['like_count'] ?? 0; ?></span>
+        </div>
+
+        <div class="comments">
+            <h3>Komentarze:</h3>
+            <?php if (count($post['comments']) > 0): ?>
+                <?php foreach ($post['comments'] as $comment): ?>
+                    <div class="comment">
+                        <strong><?php echo htmlspecialchars($comment['username']); ?>:</strong>
+                        <p><?php echo htmlspecialchars($comment['comment_text']); ?></p>
+                        <small><?php echo htmlspecialchars($comment['created_at']); ?></small>
+                    </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p>Brak komentarzy.</p>
+            <?php endif; ?>
+        </div>
+
+        <div class="add-comment">
+            <form method="post" action="">
+                <textarea name="comment_text" placeholder="Dodaj komentarz..." required></textarea>
+                <input type="hidden" name="image_id" value="<?php echo $post['image_id']; ?>" />
+                <button type="submit">Dodaj komentarz</button>
+            </form>
+        </div>
             </article>
         <?php endforeach; ?>
+
+        <!-- JavaScript do pokazywania/ukrywania formularza zgłoszenia -->
+        <script>
+            function toggleReportForm(imageId) {
+                var form = document.getElementById('report-form-' + imageId);
+                form.style.display = form.style.display === 'none' ? 'block' : 'none';
+            }
+        </script>
+
         </section>
 
         <aside class="sidebar">
