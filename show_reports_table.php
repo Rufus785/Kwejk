@@ -73,7 +73,7 @@ while ($row = $result->fetch_assoc()) {
 
     // Szczegóły raportu
     echo '<tr id="report-details-' . $row['report_id'] . '" style="display: none;">';
-    echo '<td colspan="5">';
+    echo '<td colspan="5" >';
     echo '<p><strong>Treść raportu:</strong> ' . htmlspecialchars($row['reason']) . '</p>';
     
     if ($row['is_resolved'] == 0) {

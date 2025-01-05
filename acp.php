@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Panel</title>
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="./css/acp.css" />
 </head>
 <script>
   // Funkcja do zastosowania filtra
@@ -155,8 +155,8 @@ function resolveReport(reportId, status) {
                 <img src="./images/kwejk-logo.png" alt="KWEJK.pl" />
             </a>
             <nav class="main-nav">
-                <a href="/dodaj" class="add-button">+ Dodaj</a>
-                <a href="/ranking">Top</a>
+                <a href="./dodaj.php" class="add-button">+ Dodaj</a>
+                <a href="./ranking.php">Top</a>
             </nav>
             <?php
             if (isset($_SESSION['logged']) && $_SESSION['logged'] === true){

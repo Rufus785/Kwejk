@@ -4,8 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>KWEJK.pl</title>
-    <link rel="stylesheet" href="styles.css" />
     <link rel="stylesheet" href="css/acp.css" />
+    <link rel="stylesheet" href="styles.css" />
+
   </head>
 
   <?php
@@ -175,7 +176,7 @@
         </a>
         <nav class="main-nav">
           <a href="./dodaj.php" class="add-button">+ Dodaj</a>
-          <a href="/ranking">Top</a>
+          <a href="./ranking.php">Top</a>
         </nav>
         <div class="auth-buttons" style="display: <?php echo htmlspecialchars($username)==null ? 'block' : 'none'; ?>;">
           <a href="./login.php">Logowanie</a>
@@ -264,19 +265,19 @@
         </div>
 
         <div class="comments">
-            <h3>Komentarze:</h3>
-            <?php if (count($post['comments']) > 0): ?>
-                <?php foreach ($post['comments'] as $comment): ?>
-                    <div class="comment">
-                        <strong><?php echo htmlspecialchars($comment['username']); ?>:</strong>
-                        <p><?php echo htmlspecialchars($comment['comment_text']); ?></p>
-                        <small><?php echo htmlspecialchars($comment['created_at']); ?></small>
-                    </div>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <p>Brak komentarzy.</p>
-            <?php endif; ?>
-        </div>
+  <h3>Komentarze:</h3>
+  <?php if (count($post['comments']) > 0): ?>
+    <?php foreach ($post['comments'] as $comment): ?>
+      <div class="comment">
+        <strong><?php echo htmlspecialchars($comment['username']); ?>:</strong>
+        <p><?php echo htmlspecialchars($comment['comment_text']); ?></p>
+        <small><?php echo htmlspecialchars($comment['created_at']); ?></small>
+      </div>
+    <?php endforeach; ?>
+  <?php else: ?>
+    <p class="no-comments">Brak komentarzy.</p>
+  <?php endif; ?>
+</div>
 
         <div class="add-comment">
             <form method="post" action="">
