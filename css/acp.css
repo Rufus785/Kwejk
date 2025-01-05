@@ -1,0 +1,153 @@
+:root {
+  --primary-bg: #1a1a1a;
+  --secondary-bg: #2a2a2a;
+  --text-color: #ffffff;
+  --accent-color: #ff3366;
+  --border-color: #333333;
+  --hover-bg: #3a3a3a;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: var(--primary-bg);
+  color: var(--text-color);
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+}
+
+.main-header {
+  background-color: #000;
+  border-bottom: 1px solid var(--border-color);
+  padding: 15px 0;
+}
+
+.header-content {
+  width: 80%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo img {
+  height: 60px;
+}
+
+.main-nav {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+.main-nav a {
+  color: var(--text-color);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+
+.add-button {
+  background-color: var(--accent-color) ;
+  color: white ;
+  padding: 0.5rem 1rem ;
+  border-radius: 4px ;
+  text-decoration: none ;
+}
+
+.content {
+  width: 80%;
+  margin: 2rem auto;
+}
+
+h1, h2 {
+  color: var(--text-color);
+  margin-bottom: 20px;
+}
+
+h1 {
+  font-size: 24px;
+}
+
+h2 {
+  font-size: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+th, td {
+  padding: 12px;
+  text-align: left;
+  border: 1px solid var(--border-color);
+}
+
+th {
+  background-color: var(--secondary-bg);
+  font-weight: bold;
+}
+
+tr:nth-child(even) {
+  background-color: var(--primary-bg);
+}
+
+tr:nth-child(odd) {
+  background-color: var(--secondary-bg);
+}
+
+tr:hover {
+  background-color: var(--hover-bg);
+}
+
+a {
+  text-decoration: none;
+  color: var(--accent-color);
+  font-weight: bold;
+}
+.user-button {
+  background-color: #ffd700;
+  color: #000 !important;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  text-decoration: none;
+}
+
+.empty-message {
+  text-align: center;
+  font-size: 18px;
+  color: #888;
+}
+
+#filter {
+  background-color: var(--secondary-bg);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  padding: 5px 10px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+#filter:focus {
+  outline: none;
+  border-color: var(--accent-color);
+}
+
+button {
+  background-color: var(--accent-color);
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-left:10px ;
+  margin-right: 10px;
+}
+
+
+button:disabled {
+  background-color: #888;
+  cursor: not-allowed;
+}
