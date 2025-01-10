@@ -42,41 +42,57 @@
         }
     } 
     
-    if(isset($_POST['dodaj'])){
-        $image = $_POST['image'];
-        $caption = $_POST['caption'];
-        $sql = "INSERT INTO images (user_id, caption, image_url) VALUES ('{$user_id}', '".$caption."', '{$image}' )";
-            if ($mysqli->query($sql)) {
-                echo '<p class="php-message success">Post pomyślnie dodany!</p>';					
+    if (isset($_POST['dodaj'])) {
+      if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+          $file_tmp = $_FILES['image']['tmp_name'];
+          $file_name = basename($_FILES['image']['name']);
+          $upload_dir = 'uploads/';
+  
+          if (!is_dir($upload_dir)) {
+              mkdir($upload_dir, 0755, true);
+          }
+  
+          $unique_name = uniqid() . '_' . $file_name;
+          $destination = $upload_dir . $unique_name;
+  
+          if (move_uploaded_file($file_tmp, $destination)) {
+              $image_url = $destination;
+              $caption = $_POST['caption'];
+  
+              $sql = "INSERT INTO images (user_id, caption, image_url) VALUES (?, ?, ?)";
+              $stmt = $mysqli->prepare($sql);
+              $stmt->bind_param('iss', $user_id, $caption, $image_url);
+  
+              if ($stmt->execute()) {
+                  echo '<p class="php-message success">Post pomyślnie dodany!</p>';
+                  header("Location: index.php");
+                  exit();
               } else {
-                  echo '<p class="php-message error">Błąd dodania</p>';
-                  echo $mysqli->error;
+                  echo '<p class="php-message error">Błąd dodania: ' . $mysqli->error . '</p>';
               }
-            header("Location: index.php");
-            exit();
+  
+              $stmt->close();
+          } else {
+              echo '<p class="php-message error">Błąd przesyłania pliku.</p>';
+          }
+      } else {
+          echo '<p class="php-message error">Nie wybrano pliku lub wystąpił błąd.</p>';
+      }
     }
+  
     ?>
 
     <main class="content">
       <div class="auth-container">
         <h1>Dodaj</h1>
-        <form action="dodaj.php" method="POST" id="add-form" class="add-form">
-        <div class="form-group">
-            <label for="image-ulr">Image url:</label>
-            <input
-              type="text"
-              id="image-ulr"
-              name="image"
-              required
-            />
+        <form action="dodaj.php" method="POST" id="add-form" class="add-form" enctype="multipart/form-data">
+          <div class="form-group">
+            <label for="image-file">Wybierz obraz:</label>
+            <input type="file" id="image-file" name="image" accept="image/*" required />
           </div>
           <div class="form-group">
             <label for="image-cap">Caption:</label>
-            <input
-              type="text"
-              id="image-cap"
-              name="caption"
-            />
+            <input type="text" id="image-cap" name="caption" />
           </div>
           <button type="submit" class="submit-button" name="dodaj">Dodaj</button>
         </form>
