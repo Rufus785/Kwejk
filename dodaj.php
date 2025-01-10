@@ -47,6 +47,7 @@
           $file_tmp = $_FILES['image']['tmp_name'];
           $file_name = basename($_FILES['image']['name']);
           $upload_dir = 'uploads/';
+          $watermark_path = 'images/kwejk-logo.png';
   
           if (!is_dir($upload_dir)) {
               mkdir($upload_dir, 0755, true);
@@ -56,6 +57,7 @@
           $destination = $upload_dir . $unique_name;
   
           if (move_uploaded_file($file_tmp, $destination)) {
+              add_watermark($destination, $watermark_path);
               $image_url = $destination;
               $caption = $_POST['caption'];
   
@@ -79,6 +81,40 @@
           echo '<p class="php-message error">Nie wybrano pliku lub wystąpił błąd.</p>';
       }
     }
+
+    function add_watermark($image_path, $watermark_path) {
+      $image = imagecreatefromstring(file_get_contents($image_path));
+      $watermark = imagecreatefrompng($watermark_path);
+      $watermark_width = imagesx($watermark);
+      $watermark_height = imagesy($watermark);
+      $new_width = $watermark_width / 10;
+      $new_height = $watermark_height / 10;
+  
+      $resized_watermark = imagecreatetruecolor($new_width, $new_height);
+  
+      imagealphablending($resized_watermark, false);
+      imagesavealpha($resized_watermark, true);
+  
+      imagecopyresampled(
+          $resized_watermark, $watermark,
+          0, 0, 0, 0,
+          $new_width, $new_height,
+          $watermark_width, $watermark_height
+      );
+  
+      $image_width = imagesx($image);
+      $image_height = imagesy($image);
+  
+      $x_position = $image_width - $new_width - 10;
+      $y_position = $image_height - $new_height - 10;
+  
+      imagecopy($image, $resized_watermark, $x_position, $y_position, 0, 0, $new_width, $new_height);
+      imagejpeg($image, $image_path, 90);
+
+      imagedestroy($image);
+      imagedestroy($watermark);
+      imagedestroy($resized_watermark);
+    }  
   
     ?>
 
